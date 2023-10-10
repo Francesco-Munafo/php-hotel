@@ -49,6 +49,10 @@ $hotels = [
 ];
 
 
+
+//echo boolval('') ? 'true' : 'false';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +65,16 @@ $hotels = [
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-5">
+        <form action="" method="GET" class="d-flex">
+            <select class="form-select w-50" name="parking" id="parking">
+                <option value="" selected='selected' hidden='hidden' disabled='disabled'>Parcheggio</option>
+                <option value="1">SI</option>
+                <option value="0">NO</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Filtra</button>
+            <a class="btn btn-danger" href="./index.php">Refresh Page</a>
+        </form>
         <table class="table">
             <thead>
                 <tr>
@@ -73,20 +86,53 @@ $hotels = [
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($hotels as $hotel) : ?>
-                    <tr>
-                        <td><?= $hotel['name'] ?></td>
-                        <td><?= $hotel['description'] ?></td>
-                        <td><?php if ($hotel['parking'] == true) {
-                                echo 'YES';
-                            } else {
-                                echo 'NO';
-                            } ?></td>
-                        <td><?= $hotel['vote'] ?></td>
-                        <td><?= $hotel['distance_to_center'] ?> km</td>
-                    </tr>
-                <?php endforeach ?>
+                <?php //var_dump($_GET['parking']) ?>
+                
 
+                <?php //echo !isset($_GET['parking']) ?>
+                <?php foreach ($hotels as $hotel): ?>
+                    <?php //echo "<br><br>". 'SETTATO: ' . isset($_GET['parking'])."<br><br>" . 'PARCHEGGIO_HOTEL: ' . !$hotel['parking'] ."<br><br>"  . 'FILTRO_PARCHEGGIO: ' . boolval($_GET['parking'])."<br><br>"; ?>
+                <?php if (isset($_GET['parking']) && $hotel['parking'] && $_GET['parking']): ?>
+                    
+                    <tr>
+                    <td><?= $hotel['name'] ?></td>
+                    <td><?= $hotel['description'] ?></td>
+                    <td><?php if ($hotel['parking']) {
+                            echo '✔';
+                        } else {
+                            echo '❌';
+                        } ?></td>
+                    <td><?= $hotel['vote'] ?></td>
+                    <td><?= $hotel['distance_to_center'] ?> km</td>
+                </tr>
+                <?php elseif (isset($_GET['parking']) && !$hotel['parking'] && !$_GET['parking']): ?>
+                    
+                    <tr>
+                    <td><?= $hotel['name'] ?></td>
+                    <td><?= $hotel['description'] ?></td>
+                    <td><?php if ($hotel['parking']) {
+                            echo '✔';
+                        } else {
+                            echo '❌';
+                        } ?></td>
+                    <td><?= $hotel['vote'] ?></td>
+                    <td><?= $hotel['distance_to_center'] ?> km</td>
+                </tr>
+                <?php elseif (!isset($_GET['parking'])): ?>
+                    
+                    <tr>
+                    <td><?= $hotel['name'] ?></td>
+                    <td><?= $hotel['description'] ?></td>
+                    <td><?php if ($hotel['parking']) {
+                            echo '✔';
+                        } else {
+                            echo '❌';
+                        } ?></td>
+                    <td><?= $hotel['vote'] ?></td>
+                    <td><?= $hotel['distance_to_center'] ?> km</td>
+                </tr>
+
+                <?php endif; endforeach; ?>
             </tbody>
         </table>
     </div>
